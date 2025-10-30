@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-// import 'dart:typed_data';
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../widgets/custom_button.dart';
@@ -16,19 +15,17 @@ class DetectionScreen extends StatefulWidget {
 
 class _DetectionScreenState extends State<DetectionScreen> {
   bool _loading = false;
-  Uint8List? _annotatedImage;
+  Map<String, Uint8List?> _annotatedImages = {};
   String? _errorMessage;
 
   Future<void> _detectImage() async {
     setState(() {
       _loading = true;
-      _annotatedImage = null;
+      _annotatedImages.clear();
       _errorMessage = null;
     });
 
-    // This should match your Space endpoint format
     const endpoint = "http://192.168.1.2:8000/predict";
-
     final response = await ApiService.uploadImage(widget.imageFile, endpoint);
 
     setState(() => _loading = false);
@@ -41,11 +38,14 @@ class _DetectionScreenState extends State<DetectionScreen> {
     try {
       final json = jsonDecode(response);
 
-      // Expecting a key called "image" containing base64 data
-      if (json.containsKey("image")) {
-        final base64String = json["image"];
-        final bytes = base64Decode(base64String);
-        setState(() => _annotatedImage = bytes);
+      if (json.containsKey("images")) {
+        final images = json["images"] as Map<String, dynamic>;
+        images.forEach((label, base64String) {
+          if (base64String != null) {
+            _annotatedImages[label] = base64Decode(base64String);
+          }
+        });
+        setState(() {});
       } else if (json.containsKey("error")) {
         setState(() => _errorMessage = json["error"].toString());
       } else {
@@ -60,11 +60,12 @@ class _DetectionScreenState extends State<DetectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Detection")),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.file(widget.imageFile, height: 250),
+            Image.file(widget.imageFile, height: 250, fit: BoxFit.contain),
             const SizedBox(height: 20),
             CustomButton(
               text: "Run Detection",
@@ -73,22 +74,28 @@ class _DetectionScreenState extends State<DetectionScreen> {
             ),
             const SizedBox(height: 20),
             if (_loading) const CircularProgressIndicator(),
-            if (_annotatedImage != null)
-              Expanded(
-                child: Column(
+            if (_annotatedImages.isNotEmpty) ...[
+              const Text(
+                "Detection Results:",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              for (final entry in _annotatedImages.entries)
+                Column(
                   children: [
-                    const Text(
-                      "Detection Result:",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    Text(
+                      entry.key.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Expanded(child: Image.memory(_annotatedImage!)),
+                    const SizedBox(height: 8),
+                    Image.memory(entry.value!, fit: BoxFit.contain),
+                    const SizedBox(height: 20),
                   ],
                 ),
-              ),
+            ],
             if (_errorMessage != null)
               Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
           ],
