@@ -5,15 +5,17 @@ import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../widgets/custom_button.dart';
 
-class DetectionScreen extends StatefulWidget {
+class DetectionPeriodontitisScreen extends StatefulWidget {
   final File imageFile;
-  const DetectionScreen({super.key, required this.imageFile});
+  const DetectionPeriodontitisScreen({super.key, required this.imageFile});
 
   @override
-  State<DetectionScreen> createState() => _DetectionScreenState();
+  State<DetectionPeriodontitisScreen> createState() =>
+      _DetectionPeriodontitisScreenState();
 }
 
-class _DetectionScreenState extends State<DetectionScreen> {
+class _DetectionPeriodontitisScreenState
+    extends State<DetectionPeriodontitisScreen> {
   bool _loading = false;
   Map<String, Uint8List?> _annotatedImages = {};
   String? _errorMessage;
@@ -25,7 +27,8 @@ class _DetectionScreenState extends State<DetectionScreen> {
       _errorMessage = null;
     });
 
-    const endpoint = "http://192.168.1.2:8000/predict";
+    const endpoint = "http://192.168.1.3:8000/predict/periodontitis";
+
     final response = await ApiService.uploadImage(widget.imageFile, endpoint);
 
     setState(() => _loading = false);
@@ -40,11 +43,21 @@ class _DetectionScreenState extends State<DetectionScreen> {
 
       if (json.containsKey("images")) {
         final images = json["images"] as Map<String, dynamic>;
+        _annotatedImages.clear();
+
         images.forEach((label, base64String) {
-          if (base64String != null) {
-            _annotatedImages[label] = base64Decode(base64String);
+          if (base64String != null && base64String.isNotEmpty) {
+            try {
+              _annotatedImages[label] = base64Decode(base64String);
+            } catch (e) {
+              print("Failed to decode $label: $e");
+              _annotatedImages[label] = null;
+            }
+          } else {
+            _annotatedImages[label] = null;
           }
         });
+
         setState(() {});
       } else if (json.containsKey("error")) {
         setState(() => _errorMessage = json["error"].toString());
@@ -59,7 +72,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Detection")),
+      appBar: AppBar(title: const Text("Periodontitis Detection")),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -68,7 +81,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
             Image.file(widget.imageFile, height: 250, fit: BoxFit.contain),
             const SizedBox(height: 20),
             CustomButton(
-              text: "Run Detection",
+              text: "Run Periodontitis Detection",
               icon: Icons.science,
               onPressed: _detectImage,
             ),
@@ -81,20 +94,21 @@ class _DetectionScreenState extends State<DetectionScreen> {
               ),
               const SizedBox(height: 10),
               for (final entry in _annotatedImages.entries)
-                Column(
-                  children: [
-                    Text(
-                      entry.key.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                if (entry.value != null)
+                  Column(
+                    children: [
+                      Text(
+                        entry.key.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Image.memory(entry.value!, fit: BoxFit.contain),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+                      const SizedBox(height: 8),
+                      Image.memory(entry.value!, fit: BoxFit.contain),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
             ],
             if (_errorMessage != null)
               Text(_errorMessage!, style: const TextStyle(color: Colors.red)),

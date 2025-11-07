@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = "http://192.168.1.2:8000/predict";
+  static const String baseUrl = "http://192.168.1.3:8000";
 
   static Future<String?> uploadImage(File imageFile, [String? endpoint]) async {
     try {
-      // Remove the endpoint part for Hugging Face API
-      final uri = Uri.parse(baseUrl);
+      // Use provided endpoint, default to "/predict" if null
+      final uri = Uri.parse(endpoint ?? "$baseUrl/predict");
 
       var request = http.MultipartRequest('POST', uri)
         ..files.add(await http.MultipartFile.fromPath('image', imageFile.path));
