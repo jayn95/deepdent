@@ -27,7 +27,8 @@ class _DetectionPeriodontitisScreenState
       _errorMessage = null;
     });
 
-    const endpoint = "http://192.168.1.3:8000/predict/periodontitis";
+    const endpoint =
+        "https://deepdent-backend.onrender.com/predict/periodontitis";
 
     final response = await ApiService.uploadImage(widget.imageFile, endpoint);
 

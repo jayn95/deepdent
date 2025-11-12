@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = "http://192.168.1.3:8000";
+  static const String baseUrl = "https://deepdent-backend.onrender.com";
 
   static Future<String?> uploadImage(File imageFile, [String? endpoint]) async {
     try {
