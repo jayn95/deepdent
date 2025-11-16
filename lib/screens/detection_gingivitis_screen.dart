@@ -26,7 +26,7 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
       _errorMessage = null;
     });
 
-    const endpoint = "http://192.168.1.3:8000/predict/gingivitis";
+    const endpoint = "https://deepdent-backend.onrender.com/predict/gingivitis";
 
     final response = await ApiService.uploadImage(widget.imageFile, endpoint);
 
