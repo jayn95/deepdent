@@ -10,6 +10,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       // Gradient background
       body: Container(
         width: double.infinity,
@@ -34,6 +35,8 @@ class HomeScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
       backgroundColor: const Color(0xFFF4EFFA),

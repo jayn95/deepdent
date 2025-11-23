@@ -66,6 +66,7 @@ flutter:
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/smile_white.png
@@ -99,6 +100,8 @@ flutter:
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   fonts:
      - family: InterTight
        fonts:
@@ -109,6 +112,9 @@ flutter:
            weight: 700
          - asset: assets/fonts/InterTight-Light.ttf
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
