@@ -77,21 +77,55 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.file(widget.imageFile, height: 250, fit: BoxFit.contain),
+            // SPACING FROM APP BAR (ADDED)
             const SizedBox(height: 20),
-            CustomButton(
-              text: "Run Gingivitis Detection",
-              icon: Icons.science,
-              onPressed: _detectImage,
+            // CENTERED TEXT (CHANGED)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.task_alt_outlined,
+                  color: Color(0xFF532B88),
+                  size: 40,
+                ),
+                SizedBox(width: 15),
+                Text(
+                  "Image ready for detection",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF532B88),
+                  ),
+                ),
+              ],
             ),
+
             const SizedBox(height: 20),
+            Image.file(widget.imageFile, height: 250, fit: BoxFit.contain),
+            const SizedBox(height: 50),
+
+            // BUTTON TEXT NOW FITS IN ONE LINE (REDUCED PADDING)
+            SizedBox(
+                width: double.infinity,
+                child: CustomButton(
+                  text: "Run Detection",
+                  icon: Icons.science,
+              onPressed: _detectImage,
+              backgroundColor: const Color(0xFF532B88),
+            ),
+            ),
+
+            const SizedBox(height: 20),
+
             if (_loading) const CircularProgressIndicator(),
+
             if (_annotatedImages.isNotEmpty) ...[
               const Text(
                 "Detection Results:",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
+
               for (final entry in _annotatedImages.entries)
                 if (entry.value != null)
                   Column(
@@ -109,8 +143,12 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
                     ],
                   ),
             ],
+
             if (_errorMessage != null)
-              Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
+              Text(
+                _errorMessage!,
+                style: const TextStyle(color: Colors.red),
+              ),
           ],
         ),
       ),

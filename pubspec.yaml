@@ -58,11 +58,13 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
+  assets:
+     - assets/logo/
+     - assets/images/
+     - assets/images/home_image.png
 
+<<<<<<< Updated upstream
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/smile_white.png
@@ -93,6 +95,17 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+=======
+  fonts:
+     - family: InterTight
+       fonts:
+         - asset: assets/fonts/InterTight-Regular.ttf
+         - asset: assets/fonts/InterTight-Italic.ttf
+           style: italic
+         - asset: assets/fonts/InterTight-Bold.ttf
+           weight: 700
+         - asset: assets/fonts/InterTight-Light.ttf
+>>>>>>> Stashed changes
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
