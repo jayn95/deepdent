@@ -57,22 +57,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   uses-material-design: true
   assets:
      - assets/logo/
      - assets/images/
      - assets/images/home_image.png
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  # To add assets to your application, add an assets section, like this:
-  assets:
-    - lib/assets/smile_white.png
-    - lib/assets/name_logo.png
-    - lib/assets/complete_logo.png
-    - lib/assets/choice_char.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -97,11 +87,6 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   fonts:
      - family: InterTight
        fonts:
@@ -111,13 +96,6 @@ flutter:
          - asset: assets/fonts/InterTight-Bold.ttf
            weight: 700
          - asset: assets/fonts/InterTight-Light.ttf
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

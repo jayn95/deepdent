@@ -8,37 +8,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      // Gradient background
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Replace placeholder with actual logo image
-                Container(
-                  height: 100,
-                  width: 300,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: const DecorationImage(
-                      image: AssetImage('lib/assets/name_logo.png'),
-                      fit: BoxFit.cover,
-                    ),
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
       backgroundColor: const Color(0xFFF4EFFA),
       appBar: AppBar(
         backgroundColor: const Color(0xFFF4EFFA),
@@ -59,14 +28,13 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
             Image.asset(
               "assets/images/choice.png",
               width: 350,
               height: 350,
               fit: BoxFit.contain,
             ),
-            
+            const SizedBox(height: 15),
             const Text(
               "Take control of your gum health now.",
               style: TextStyle(
@@ -79,7 +47,6 @@ class HomeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 15),
-            // Welcome text
             const Text(
               "Instantly detect potential gum disease risks from home, empowering you to seek professional care exactly when you need it.",
               style: TextStyle(
@@ -92,81 +59,26 @@ class HomeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
-
             // Start button
-            CustomButton(
-              text: "Let's go",
-              icon: Icons.play_arrow,
-              backgroundColor: const Color(0xFF9B72CF), // button background color
-              textColor: Colors.white,                     // text color
-              iconColor: Colors.white,                     // icon color
+            SizedBox(
+              width: double.infinity,
+              child: CustomButton(
+                text: "Let's go",
+                icon: Icons.play_arrow,
+                backgroundColor: const Color(0xFF9B72CF), // button background color
+                textColor: Colors.white, // text color
+                iconColor: Colors.white, // icon color
                 onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DiseaseSelectionScreen(),
->>>>>>> Stashed changes
-                  ),
-                ),
-                const Text(
-                  "Early gum disease detection made easy, right on your phone.",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF1A1C21), // Primary text
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 50),
-                // CustomButton with theme
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    elevatedButtonTheme: ElevatedButtonThemeData(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFAF76FA),
-                        foregroundColor: const Color(0xFFFFFFFF),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 16,
-                          horizontal: 32,
-                        ),
-                        textStyle: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        elevation: 4,
-                      ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DiseaseSelectionScreen(),
                     ),
-                  ),
-                  child: CustomButton(
-                    text: "Get started",
-                    icon: Icons.play_arrow,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DiseaseSelectionScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
-          ),
-        ),
-      ),
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 2,
-        backgroundColor: const Color(0xFFAF76FA), // Primary color
-        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
-        // Replace title text with an image
-        title: Image.asset(
-          'lib/assets/smile_white.png',
-          height: 75, // adjust height as needed
+          ],
         ),
       ),
     );
