@@ -79,12 +79,40 @@ class _DetectionPeriodontitisScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.file(widget.imageFile, height: 250, fit: BoxFit.contain),
+            // SPACING FROM APP BAR (ADDED)
             const SizedBox(height: 20),
-            CustomButton(
-              text: "Run Periodontitis Detection",
-              icon: Icons.science,
-              onPressed: _detectImage,
+            // CENTERED TEXT (CHANGED)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.task_alt_outlined,
+                  color: Color(0xFF532B88),
+                  size: 40,
+                ),
+                SizedBox(width: 15),
+                Text(
+                  "Image ready for detection",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF532B88),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Image.file(widget.imageFile, height: 250, fit: BoxFit.contain),
+            const SizedBox(height: 50),
+
+            SizedBox(
+              width: double.infinity,
+              child: CustomButton(
+                text: "Run Detection",
+                icon: Icons.science,
+                onPressed: _detectImage,
+                backgroundColor: const Color(0xFF532B88),
+              ),
             ),
             const SizedBox(height: 20),
             if (_loading) const CircularProgressIndicator(),
