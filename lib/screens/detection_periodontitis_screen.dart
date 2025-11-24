@@ -19,12 +19,14 @@ class _DetectionPeriodontitisScreenState
   bool _loading = false;
   Map<String, Uint8List?> _annotatedImages = {};
   String? _errorMessage;
+  String? _toothAnalysis;
 
   Future<void> _detectImage() async {
     setState(() {
       _loading = true;
       _annotatedImages.clear();
       _errorMessage = null;
+      _toothAnalysis = null;
     });
 
     const endpoint =
@@ -42,31 +44,36 @@ class _DetectionPeriodontitisScreenState
     try {
       final json = jsonDecode(response);
 
-      if (json.containsKey("images")) {
-        final images = json["images"] as Map<String, dynamic>;
-        _annotatedImages.clear();
+      _annotatedImages.clear();
+      _toothAnalysis = null;
+      _errorMessage = null;
 
-        images.forEach((label, base64String) {
-          if (base64String != null && base64String.isNotEmpty) {
-            try {
-              _annotatedImages[label] = base64Decode(base64String);
-            } catch (e) {
-              print("Failed to decode $label: $e");
-              _annotatedImages[label] = null;
-            }
-          } else {
-            _annotatedImages[label] = null;
+      // --- Handle annotated image from periodontitis API ---
+      if (json.containsKey("annotated_image")) {
+        final base64String = json["annotated_image"] as String;
+        if (base64String.isNotEmpty) {
+          try {
+            _annotatedImages["annotated"] = base64Decode(base64String);
+          } catch (e) {
+            print("Failed to decode annotated image: $e");
+            _annotatedImages["annotated"] = null;
           }
-        });
-
-        setState(() {});
-      } else if (json.containsKey("error")) {
-        setState(() => _errorMessage = json["error"].toString());
-      } else {
-        throw Exception("Unexpected response format: $json");
+        }
       }
+
+      // --- Extract tooth analysis ---
+      if (json.containsKey("analysis")) {
+        _toothAnalysis = json["analysis"] as String;
+      }
+
+      // --- Handle error field ---
+      if (json.containsKey("error")) {
+        _errorMessage = json["error"].toString();
+      }
+
+      setState(() {});
     } catch (e) {
-      setState(() => _errorMessage = "Failed to parse image: $e");
+      setState(() => _errorMessage = "Failed to parse response: $e");
     }
   }
 
@@ -79,9 +86,7 @@ class _DetectionPeriodontitisScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // SPACING FROM APP BAR (ADDED)
             const SizedBox(height: 20),
-            // CENTERED TEXT (CHANGED)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
@@ -104,7 +109,6 @@ class _DetectionPeriodontitisScreenState
             const SizedBox(height: 20),
             Image.file(widget.imageFile, height: 250, fit: BoxFit.contain),
             const SizedBox(height: 50),
-
             SizedBox(
               width: double.infinity,
               child: CustomButton(
@@ -117,6 +121,7 @@ class _DetectionPeriodontitisScreenState
             const SizedBox(height: 20),
             if (_loading) const CircularProgressIndicator(),
             if (_annotatedImages.isNotEmpty) ...[
+              const SizedBox(height: 20),
               const Text(
                 "Detection Results:",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -138,6 +143,15 @@ class _DetectionPeriodontitisScreenState
                       const SizedBox(height: 20),
                     ],
                   ),
+            ],
+            if (_toothAnalysis != null) ...[
+              const SizedBox(height: 20),
+              const Text(
+                "Tooth Analysis:",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(_toothAnalysis!, style: const TextStyle(fontSize: 16)),
             ],
             if (_errorMessage != null)
               Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
