@@ -4,8 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../widgets/custom_button.dart';
-import 'disease_selection_screen.dart';
-import 'perio-ins.dart'; // <-- ADD THIS
+import 'perio-ins.dart'; 
 
 class DetectionGingivitisScreen extends StatefulWidget {
   final File imageFile;
@@ -22,6 +21,18 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
   String? _errorMessage;
   String? _diagnosis;
 
+  // Helper to determine if the analysis is complete (successful or failed)
+  bool get _hasCompletedAnalysis => _diagnosis != null || _errorMessage != null;
+
+  @override
+  void initState() {
+    super.initState();
+    // OPTIONAL: Auto-run detection immediately on screen load if desired,
+    // otherwise, the user presses the button. Keeping the button press for now.
+    // _detectImage(); 
+  }
+
+
   Future<void> _detectImage() async {
     setState(() {
       _loading = true;
@@ -30,7 +41,6 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
       _diagnosis = null;
     });
 
-    // 🟣 **Check if the image exists before uploading**
     if (!await widget.imageFile.exists()) {
       setState(() {
         _loading = false;
@@ -42,12 +52,10 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
     const endpoint = "https://deepdent-backend.onrender.com/predict/gingivitis";
 
     try {
-      // 🟣 **Attempt upload**
       final response = await ApiService.uploadImage(widget.imageFile, endpoint);
 
       setState(() => _loading = false);
 
-      // 🟣 If backend is down or unreachable
       if (response == null) {
         setState(
           () =>
@@ -57,7 +65,6 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
         return;
       }
 
-      // 🟣 Try to parse JSON safely
       late Map<String, dynamic> jsonData;
       try {
         jsonData = jsonDecode(response);
@@ -66,7 +73,6 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
         return;
       }
 
-      // 🟣 Backend returned an error message
       if (jsonData.containsKey("error")) {
         setState(() {
           _errorMessage = jsonData["error"] ?? "Server error occurred.";
@@ -74,7 +80,6 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
         return;
       }
 
-      // 🟣 Decode annotated images safely
       if (jsonData.containsKey("images")) {
         final images = jsonData["images"] as Map<String, dynamic>;
         _annotatedImages.clear();
@@ -97,12 +102,10 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
         }
       }
 
-      // 🟣 Diagnosis message handling
       _diagnosis = jsonData["diagnosis"]?.toString();
 
       setState(() {});
     } catch (e) {
-      // 🟣 For unexpected exceptions
       setState(() {
         _loading = false;
         _errorMessage = "Unexpected error occurred. Please try again.";
@@ -112,130 +115,154 @@ class _DetectionGingivitisScreenState extends State<DetectionGingivitisScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const Color primaryColor = Color(0xFF532B88); // Dark purple accent
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Gingivitis Detection"),
         iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: primaryColor,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 20),
-
-            /// Header - Image ready
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(
-                  Icons.task_alt_outlined,
-                  color: Color(0xFF532B88),
-                  size: 40,
-                ),
-                SizedBox(width: 15),
-                Text(
-                  "Image ready for detection",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF532B88),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 20),
-            Image.file(widget.imageFile, height: 250, fit: BoxFit.contain),
-            const SizedBox(height: 50),
-
-            /// Detection button
-            SizedBox(
-              width: double.infinity,
-              child: CustomButton(
-                text: "Run Detection",
-                icon: Icons.science,
-                onPressed: _detectImage,
-                backgroundColor: const Color(0xFF532B88),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            if (_loading) const CircularProgressIndicator(),
-
-            /// Annotated images
-            if (_annotatedImages.isNotEmpty) ...[
-              const Text(
-                "Detection Results:",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-
-              for (final entry in _annotatedImages.entries)
-                if (entry.value != null)
-                  Column(
+            // --- Loading State ---
+            if (_loading) 
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 80.0),
+                  child: Column(
                     children: [
-                      Text(
-                        entry.key.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Image.memory(entry.value!, fit: BoxFit.contain),
-                      const SizedBox(height: 20),
+                      CircularProgressIndicator(color: primaryColor),
+                      SizedBox(height: 20),
+                      Text("Analyzing image... please wait.", style: TextStyle(fontSize: 16, color: primaryColor)),
                     ],
                   ),
-            ],
-
-            /// Diagnosis box
-            if (_diagnosis != null) ...[
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.teal.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.teal),
-                ),
-                child: Text(
-                  _diagnosis!,
-                  style: const TextStyle(fontSize: 16, color: Colors.teal),
-                  textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(height: 20),
 
-              /// If gingivitis detected → show button
-              if (_diagnosis!.toLowerCase().contains("you have gingivitis"))
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF532B88),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PerioInsScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Proceed to Periodontitis Detection",
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+            // --- Pre-Run State: Show Image and Button to Start Analysis ---
+            if (!_hasCompletedAnalysis && !_loading)
+              Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.task_alt_outlined, color: primaryColor, size: 40),
+                      SizedBox(width: 15),
+                      Text("Image is ready!", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: primaryColor)),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Image.file(widget.imageFile, height: 250, fit: BoxFit.contain),
+                  const SizedBox(height: 50),
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomButton(
+                      text: "Run Detection",
+                      icon: Icons.science,
+                      onPressed: _detectImage,
+                      backgroundColor: primaryColor,
+                      textColor: Colors.white,
+                      iconColor: Colors.white,
                     ),
                   ),
-                ),
-            ],
+                ],
+              ),
+              
+            // --- Post-Run State: Show Results or Error ---
+            if (_hasCompletedAnalysis)
+              Column(
+                children: [
+                  // 1. Error Message
+                  if (_errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 20),
+                      child: Text(_errorMessage!, style: const TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
 
-            /// Error message
-            if (_errorMessage != null)
-              Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
+                  // 2. Annotated Images
+                  if (_annotatedImages.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Annotated Results:",
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: primaryColor),
+                    ),
+                    const SizedBox(height: 15),
+                    
+                    // Display images returned by the AI
+                    for (final entry in _annotatedImages.entries)
+                      if (entry.value != null)
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: primaryColor.withOpacity(0.3)),
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Column(
+                            children: [
+                              Text(
+                                entry.key.toUpperCase(),
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: primaryColor),
+                              ),
+                              const SizedBox(height: 8),
+                              Image.memory(entry.value!, fit: BoxFit.contain),
+                            ],
+                          ),
+                        ),
+                  ],
+
+                  // 3. Diagnosis Text
+                  if (_diagnosis != null) ...[
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.teal.shade50,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.teal),
+                      ),
+                      child: Text(
+                        _diagnosis!,
+                        style: const TextStyle(fontSize: 18, color: Colors.teal, fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+
+                    // 4. Conditional Next Step Button (if gingivitis is found)
+                    if (_diagnosis!.toLowerCase().contains("gingivitis"))
+                      SizedBox(
+                        child: CustomButton( 
+                          icon: Icons.arrow_forward,
+                          text: "Further Analysis", // Used original text
+                          backgroundColor: primaryColor,
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PerioInsScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      
+                    const SizedBox(height: 20),
+
+                    // 5. Back Button (if analysis is complete)
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("Run New Scan", style: TextStyle(color: Colors.grey, fontFamily: 'InterTight',)),
+                    ),
+                  ],
+                ],
+              ),
           ],
         ),
       ),

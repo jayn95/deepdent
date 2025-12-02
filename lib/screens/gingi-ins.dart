@@ -77,7 +77,7 @@ class GingiInsScreen extends StatelessWidget {
                 Icon(Icons.check_circle_outline, size: 40),
                 SizedBox(width: 16),
                 Expanded(
-                  child: Text('Follow on-screen instructions carefully.'),
+                  child: Text('Follow these instructions carefully.'),
                 ),
               ],
             ),

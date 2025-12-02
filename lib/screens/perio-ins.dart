@@ -25,7 +25,7 @@ class PerioInsScreen extends StatelessWidget {
                 SizedBox(width: 16),
                 Expanded(
                   child: Text(
-                    'Upload a clear panoramic dental X-ray showing the full jaw, including all teeth and surrounding bone.',
+                    'Upload a clear periapical X-ray showing the tooth structure, from crown to root apex, along with the adjacent periodontal and alveolar bone.',
                   ),
                 ),
               ],
@@ -36,7 +36,7 @@ class PerioInsScreen extends StatelessWidget {
                 Expanded(
                   child: Image.asset(
                     'assets/images/p-right.png',
-                    height: 120,
+                    height: 180,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -44,7 +44,7 @@ class PerioInsScreen extends StatelessWidget {
                 Expanded(
                   child: Image.asset(
                     'assets/images/p-wrong.png',
-                    height: 120,
+                    height: 180,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -56,7 +56,7 @@ class PerioInsScreen extends StatelessWidget {
                 SizedBox(width: 16),
                 Expanded(
                   child: Text(
-                    '* Make sure the image includes the entire gum line and jawbone.',
+                    '* Make sure the X-ray captures the full tooth, including the root apex and surrounding bone.',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 12),
                   ),

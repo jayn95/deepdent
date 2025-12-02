@@ -21,14 +21,14 @@ class DiseaseSelectionScreen extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFF532B88), width: 1.5),
+                border: Border.all(color: Color(0xFF2F184B), width: 1.5),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: const [
                   Icon(
                     Icons.search_outlined,
-                    color: Color(0xFF532B88),
+                    color: Color(0xFF2F184B),
                     size: 40,
                   ),
                   SizedBox(width: 10),
@@ -38,7 +38,7 @@ class DiseaseSelectionScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF532B88),
+                        color: Color(0xFF2F184B),
                       ),
                     ),
                   ),
@@ -61,7 +61,7 @@ class DiseaseSelectionScreen extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 25,
-                      color: Color(0xFF532B88),
+                      color: Color(0xFF2F184B),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -123,7 +123,7 @@ class DiseaseSelectionScreen extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 25,
-                      color: Color(0xFF532B88),
+                      color: Color(0xFF2F184B),
                     ),
                   ),
                   const SizedBox(height: 10),

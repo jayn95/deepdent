@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'screens/splashscreen.dart';
 
 void main() {
   runApp(const GingiPerioApp());
@@ -53,7 +53,7 @@ class GingiPerioApp extends StatelessWidget {
         ),
       ),
 
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }

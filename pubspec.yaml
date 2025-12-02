@@ -68,7 +68,9 @@ flutter:
   assets:
      - assets/logo/
      - assets/images/
-     - assets/images/home_image.png
+     - assets/images/idea.png
+     - assets/images/trash.png
+     - assets/images/selfie.png
 
   generate: true
 
