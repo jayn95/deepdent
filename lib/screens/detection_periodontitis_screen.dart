@@ -131,14 +131,6 @@ class _DetectionPeriodontitisScreenState
                 if (entry.value != null)
                   Column(
                     children: [
-                      Text(
-                        entry.key.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
                       Image.memory(entry.value!, fit: BoxFit.contain),
                       const SizedBox(height: 20),
                     ],
@@ -155,6 +147,29 @@ class _DetectionPeriodontitisScreenState
             ],
             if (_errorMessage != null)
               Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
+
+            const SizedBox(height: 30),
+
+            // -------------------- DISCLAIMER --------------------
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: const Text(
+                "Disclaimer: This tool can only estimate bone loss on dental X-rays. "
+                "A clinical diagnosis is essential for confirming the condition and determining proper treatment.",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black87,
+                  height: 1.3,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

@@ -12,9 +12,9 @@ class DiseaseSelectionScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("Select Detection Type")),
       body: Column(
         children: [
-          const SizedBox(height: 50),
+          // Fixed search box at the top
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.all(20),
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -43,14 +43,16 @@ class DiseaseSelectionScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Upper half: Gingivitis
+
+          // Scrollable section for the rest
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 30),
+                  // Gingivitis Section
+                  const SizedBox(height: 20),
                   const Text(
                     "1. Gingivitis Detection",
                     style: TextStyle(
@@ -97,33 +99,22 @@ class DiseaseSelectionScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder:
-                                (context) =>
-                                    const GingiInsScreen(), // route changed to gingi-ins.dart
+                            builder: (context) => const GingiInsScreen(),
                           ),
                         );
                       },
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
 
-          // horizontal divider instead of different background for perio
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
-            child: Divider(height: 1, thickness: 1, color: Color(0xFF9B72CF)),
-          ),
-          const SizedBox(height: 8),
+                  const SizedBox(height: 20),
+                  const Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: Color(0xFF9B72CF),
+                  ),
+                  const SizedBox(height: 20),
 
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
+                  // Periodontitis Section
                   const Text(
                     "2. Periodontitis Detection",
                     style: TextStyle(
@@ -170,14 +161,13 @@ class DiseaseSelectionScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder:
-                                (context) =>
-                                    const PerioInsScreen(), // route changed to perio-ins.dart
+                            builder: (context) => const PerioInsScreen(),
                           ),
                         );
                       },
                     ),
                   ),
+                  const SizedBox(height: 20), // extra bottom padding
                 ],
               ),
             ),
