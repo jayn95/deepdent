@@ -34,7 +34,10 @@ class _ImageSelectionScreenState extends State<ImageSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Upload Image – ${widget.detectionType}")),
+      appBar: AppBar(
+        title: Text("Upload Image – ${widget.detectionType}"),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

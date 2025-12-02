@@ -80,7 +80,10 @@ class _DetectionPeriodontitisScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Periodontitis Detection")),
+      appBar: AppBar(
+        title: const Text("Periodontitis Detection"),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

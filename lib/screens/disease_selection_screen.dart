@@ -9,7 +9,10 @@ class DiseaseSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Select Detection Type")),
+      appBar: AppBar(
+        title: const Text("Select Detection Type"),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Column(
         children: [
           // Fixed search box at the top

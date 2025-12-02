@@ -10,7 +10,10 @@ class GingiInsScreen extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Check for Gingivitis")),
+      appBar: AppBar(
+        title: const Text("Check for Gingivitis"),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(

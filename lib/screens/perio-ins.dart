@@ -10,7 +10,10 @@ class PerioInsScreen extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Check for Periodontitis")),
+      appBar: AppBar(
+        title: const Text("Check for Periodontitis"),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(

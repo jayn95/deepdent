@@ -14,7 +14,7 @@ class ApiService {
         ..files.add(await http.MultipartFile.fromPath('image', imageFile.path));
 
       final streamedResponse = await request.send().timeout(
-        const Duration(seconds: 60),
+        const Duration(seconds: 180),
       );
       final response = await http.Response.fromStream(streamedResponse);
 
